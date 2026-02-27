@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-miniflix
+  namespace: miniflix
+spec:
+  selector:
+    app: hello-miniflix
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
