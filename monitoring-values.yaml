@@ -1,0 +1,20 @@
+grafana:
+  adminPassword: "MiniFlixGrafana2026!"
+  service:
+    type: ClusterIP
+
+prometheus:
+  prometheusSpec:
+    retention: 7d
+
+alertmanager:
+  alertmanagerSpec: {}
+
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
