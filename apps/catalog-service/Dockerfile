@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY main.py /app/main.py
 
-RUN pip install --no-cache-dir flask gunicorn
+RUN pip install flask
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:app"]
+CMD ["python", "main.py"]
