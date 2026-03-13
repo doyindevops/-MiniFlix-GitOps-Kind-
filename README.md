@@ -1,4 +1,4 @@
-````markdown
+````
 # MiniFlix 🎬 — Netflix-Style App with Kubernetes + GitOps
 
 MiniFlix is a small **Netflix-style web application** deployed on Kubernetes using a **GitOps workflow with Argo CD**.
