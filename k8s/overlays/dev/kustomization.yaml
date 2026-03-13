@@ -8,8 +8,8 @@ resources:
 
 images:
   - name: miniflix-frontend
-    newName: docker.io/YOUR_DOCKERHUB_USERNAME/miniflix-frontend
-    newTag: initial
+    newName: docker.io/adedoyine/miniflix-frontend
+    newTag: frontend-4ec0dc2
   - name: miniflix-catalog
-    newName: docker.io/YOUR_DOCKERHUB_USERNAME/miniflix-catalog
-    newTag: initial
+    newName: docker.io/adedoyine/miniflix-catalog
+    newTag: catalog-4ec0dc2
