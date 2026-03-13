@@ -14,23 +14,7 @@ spec:
         app: miniflix-catalog
     spec:
       containers:
-        - name: api
-          image: tiangolo/uvicorn-gunicorn-fastapi:python3.11
-          env:
-            - name: MODULE_NAME
-              value: "main"
-            - name: VARIABLE_NAME
-              value: "app"
+        - name: catalog
+          image: miniflix-catalog:latest
           ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: app
-              mountPath: /app/main.py
-              subPath: main.py
-      volumes:
-        - name: app
-          configMap:
-            name: miniflix-catalog
-            items:
-              - key: main.py
-                path: main.py
+            - containerPort: 5000

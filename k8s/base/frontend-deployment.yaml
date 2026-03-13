@@ -15,17 +15,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.27-alpine
+          image: miniflix-frontend:latest
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: html
-              mountPath: /usr/share/nginx/html/index.html
-              subPath: index.html
-      volumes:
-        - name: html
-          configMap:
-            name: miniflix-frontend
-            items:
-              - key: index.html
-                path: index.html

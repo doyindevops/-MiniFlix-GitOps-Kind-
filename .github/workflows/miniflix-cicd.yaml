@@ -1,0 +1,77 @@
+name: MiniFlix CI/CD
+
+on:
+  push:
+    branches:
+      - main
+   paths-ignore:
+  - 'k8s/overlays/dev/kustomization.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-update-manifests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout application repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set short SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./apps/frontend
+          file: ./apps/frontend/Dockerfile
+          push: true
+          tags: |
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-frontend:frontend-${{ steps.vars.outputs.SHORT_SHA }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-frontend:latest
+
+      - name: Build and push catalog image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./apps/catalog-service
+          file: ./apps/catalog-service/Dockerfile
+          push: true
+          tags: |
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-catalog:catalog-${{ steps.vars.outputs.SHORT_SHA }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-catalog:latest
+
+      - name: Update dev overlay image tags
+        run: |
+          sed -i "s|newName: docker.io/.*/miniflix-frontend|newName: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-frontend|g" k8s/overlays/dev/kustomization.yaml
+          sed -i "/newName: docker.io\/${{ secrets.DOCKERHUB_USERNAME }}\/miniflix-frontend/{n;s|newTag: .*|newTag: frontend-${{ steps.vars.outputs.SHORT_SHA }}|;}" k8s/overlays/dev/kustomization.yaml
+
+          sed -i "s|newName: docker.io/.*/miniflix-catalog|newName: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/miniflix-catalog|g" k8s/overlays/dev/kustomization.yaml
+          sed -i "/newName: docker.io\/${{ secrets.DOCKERHUB_USERNAME }}\/miniflix-catalog/{n;s|newTag: .*|newTag: catalog-${{ steps.vars.outputs.SHORT_SHA }}|;}" k8s/overlays/dev/kustomization.yaml
+
+      - name: Commit updated image tags
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add k8s/overlays/dev/kustomization.yaml
+
+          if git diff --cached --quiet; then
+            echo "No manifest changes to commit."
+            exit 0
+          fi
+
+          git commit -m "ci: update MiniFlix image tags to ${{ steps.vars.outputs.SHORT_SHA }}"
+          git push
