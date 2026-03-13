@@ -1,45 +1,41 @@
-Paste this **exactly** into `README.md` and save.
+````markdown
+# MiniFlix 🎬 — Netflix-Style App with Kubernetes & GitOps
 
-# MiniFlix 🎬 — Netflix-Style App with Kubernetes + GitOps
+MiniFlix is a Netflix-style web application deployed on Kubernetes using a GitOps workflow with Argo CD.
 
-MiniFlix is a small **Netflix-style web application** deployed on Kubernetes using a **GitOps workflow with Argo CD**.
+The project demonstrates a modern DevOps delivery pipeline where application changes are automatically built, published, and deployed using **Git as the single source of truth**.
 
-The goal of this project is to demonstrate a **modern DevOps delivery pipeline** where application changes are automatically built, published, and deployed using Git as the single source of truth.
+The platform includes:
 
-The application includes:
-
-*  A **frontend UI** displaying movie tiles in a Netflix-style layout
-*  A **Catalog API** providing movie data
-*  A **GitOps deployment pipeline** that automatically updates the cluster when code changes
-
----
-
-##  Live Demo
-
-**Frontend**
-
-[http://13.219.139.230](http://13.219.139.230)
-
-**API example**
-
-[http://13.219.139.230/api/movies](http://13.219.139.230/api/movies)
-
-**Health check**
-
-[http://13.219.139.230/api/health](http://13.219.139.230/api/health)
+- A frontend UI displaying movie tiles in a Netflix-style layout
+- A Catalog API serving movie data
+- A GitOps deployment pipeline that continuously syncs Kubernetes with the Git repository
 
 ---
 
-##  What the App Does
+# 🌐 Live Demo
+
+Frontend  
+http://13.219.139.230
+
+API example  
+http://13.219.139.230/api/movies
+
+Health check  
+http://13.219.139.230/api/health
+
+---
+
+# What the App Does
 
 MiniFlix demonstrates a simple streaming-platform style interface.
 
 Users can:
 
-* 🎬 Open a Netflix-style UI
-* 🧾 Browse movie tiles
-* 🔎 Search titles
-* 📡 Fetch movie data through the API
+- Open a Netflix-style UI
+- Browse movie tiles
+- Search titles
+- Fetch movie data through the API
 
 Example API response:
 
@@ -56,63 +52,59 @@ Example API response:
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
-###  Infrastructure
+## Infrastructure
 
-* AWS EC2
-* Kubernetes (**k3s**)
+- AWS EC2
+- Kubernetes (k3s)
 
-###  DevOps
+## DevOps
 
-* GitOps deployment with **Argo CD**
-* CI pipeline using **GitHub Actions**
-* Container registry: **Docker Hub**
+- GitOps deployment with Argo CD
+- CI pipeline using GitHub Actions
+- Container registry: Docker Hub
 
-###  Application
+## Application
 
-**Frontend**
+### Frontend
+- HTML
+- Tailwind CSS
+- Nginx
 
-* HTML
-* Tailwind CSS
-* Nginx
+### Backend
+- FastAPI
 
-**Backend**
+### Networking
+- NGINX Ingress Controller
 
-* FastAPI
-
-**Networking**
-
-* NGINX Ingress Controller
-
-**Monitoring**
-
-* Prometheus
-* Grafana
+### Monitoring
+- Prometheus
+- Grafana
 
 ---
 
-##  Architecture Overview
+# 🏗 Architecture Overview
 
 The deployment pipeline follows a **GitOps model**:
 
 ```text
 Developer Push
       ↓
-GitHub Actions (CI) 
-Build Docker Images 
+GitHub Actions (CI)
+Build Docker Images
       ↓
-Push Images → DockerHub 
+Push Images → Docker Hub
       ↓
-Update GitOps manifests 
+Update GitOps manifests
       ↓
-ArgoCD detects change 
+ArgoCD detects change
       ↓
-Kubernetes cluster syncs 
+Kubernetes cluster syncs
       ↓
-Pods update automatically 
+Pods update automatically
       ↓
-NGINX Ingress exposes service 
+NGINX Ingress exposes service
 ```
 
 Application architecture inside Kubernetes:
@@ -121,39 +113,37 @@ Application architecture inside Kubernetes:
 Internet
    │
    ▼
-NGINX Ingress 
+NGINX Ingress
    │
-   ├── /        → Frontend service 
+   ├── /        → Frontend service
    │
-   └── /api/*   → Catalog API service 
+   └── /api/*   → Catalog API service
 ```
 
 ---
 
-##  Phase 1 — GitOps Platform Setup
+# Phase 1 — GitOps Platform Setup
 
-###  Goal
+## Goal
 
-Build the **GitOps foundation** before deploying the application.
+Build the GitOps foundation before deploying the application.
 
-This phase focused on proving that:
+This phase focused on proving that the GitOps flow works:
 
 ```text
 Git → ArgoCD → Kubernetes
 ```
 
-works correctly.
+## What Was Implemented
 
-###  What Was Implemented
-
-* Kubernetes environment, initially using **Kind**
-* **NGINX Ingress Controller**
-* **Argo CD installation**
-* GitOps deployment test application
+- Kubernetes environment (initially using Kind)
+- NGINX Ingress Controller
+- Argo CD installation
+- GitOps deployment test application
 
 ArgoCD continuously watches the Git repository and automatically applies updates to the cluster.
 
-###  Phase 1 Screenshots
+### Phase 1 Screenshots
 
 Saved in:
 
@@ -163,40 +153,40 @@ docs/screenshots/phase-1/
 
 ---
 
-##  Phase 2 — Deploy MiniFlix MVP
+# Phase 2 — Deploy MiniFlix MVP
 
-###  Goal
+## Goal
 
 Replace the test application with a real service:
 
-* 🎨 MiniFlix UI
-* 📦 Catalog API
-* 🌐 Ingress routing
+- MiniFlix UI
+- Catalog API
+- Ingress routing
 
-###  Deployment Environment
+## Deployment Environment
 
 Phase 2 runs on **AWS EC2 using k3s**.
 
-Local laptop resources struggled with:
+Local development environments struggled with running:
+
+- Kind
+- Docker
+- ArgoCD
+
+Moving the cluster to EC2 provided a stable Kubernetes environment while keeping infrastructure costs low.
+
+## Infrastructure Used
+
+- 1 AWS EC2 instance
+- k3s Kubernetes distribution
+
+## Routing Configuration
+
+Ingress rules route traffic as follows:
 
 ```text
-Kind + Docker + ArgoCD
-```
-
-Moving to EC2 allowed a stable Kubernetes environment while keeping costs low.
-
-Infrastructure used:
-
-* 1 EC2 instance
-* k3s, a lightweight Kubernetes distribution
-
-###  Routing Configuration
-
-Ingress rules route traffic like this:
-
-```text
-/       → MiniFlix frontend
-/api/*  → Catalog API
+/        → MiniFlix frontend
+/api/*   → Catalog API
 ```
 
 Example endpoints:
@@ -206,7 +196,7 @@ Example endpoints:
 /api/health
 ```
 
-###  Quick Verification Commands
+## Quick Verification Commands
 
 Check ArgoCD application:
 
@@ -232,7 +222,7 @@ Test API:
 curl http://13.219.139.230/api/movies
 ```
 
-###  Phase 2 Screenshots
+### Phase 2 Screenshots
 
 Saved in:
 
@@ -256,57 +246,61 @@ Example files:
 
 ---
 
-##  Phase 3 — Observability
+# 📊 Phase 3 — Observability
 
-Monitoring was added to observe system health and resource usage.
+Monitoring was added to observe cluster health and resource usage.
 
-Stack deployed:
+## Monitoring Stack
 
-* Prometheus 📈
-* Grafana 📊
-* kube-prometheus-stack
+- Prometheus
+- Grafana
+- kube-prometheus-stack
 
-Metrics monitored:
+## Metrics Monitored
 
-* Pod CPU usage
-* Pod memory usage
-* Pod restarts
-* Node resource usage
+- Pod CPU usage
+- Pod memory usage
+- Pod restart count
+- Node resource utilization
 
-This gives visibility into how the application behaves in the cluster.
+This provides visibility into application behavior and cluster performance.
 
 ---
 
-## 🔄 Phase 4 — CI/CD Pipeline
+# 🔄 Phase 4 — CI/CD Pipeline
 
-Phase 4 introduces **full CI/CD automation**.
+Phase 4 introduces full CI/CD automation.
 
 When developers push code:
 
 ```text
-Push → GitHub Actions builds containers ⚙️
-     → Images pushed to DockerHub 📦
-     → GitOps manifests updated 📝
-     → ArgoCD detects change 🔄
-     → Kubernetes automatically deploys new version ☸️
+Push → GitHub Actions builds containers
+     → Images pushed to Docker Hub
+     → GitOps manifests updated
+     → ArgoCD detects change
+     → Kubernetes automatically deploys new version
 ```
 
-This means the cluster state is always synchronized with the Git repository.
+This ensures the cluster state is always synchronized with the Git repository.
 
-###  Phase 4 Verification
+---
 
-The Phase 4 pipeline was verified end to end with the following evidence:
+# ✅ Phase 4 Verification
 
-* GitHub Actions workflow completed successfully
-* Frontend and catalog images were pushed to Docker Hub
-* Kustomize image tags were updated in the GitOps overlay
-* ArgoCD showed the application as **Synced** and **Healthy**
-* Kubernetes pods were running successfully
-* Service wiring correctly routed traffic from port 80 to container port 5000
-* Public ingress endpoints returned live API responses
-* The MiniFlix frontend loaded successfully in the browser
+The CI/CD pipeline was verified end-to-end with the following evidence:
 
-### 📸 Phase 4 Screenshots
+- GitHub Actions workflow completed successfully
+- Frontend and catalog images pushed to Docker Hub
+- Kustomize image tags updated in the GitOps overlay
+- ArgoCD application status: **Synced and Healthy**
+- Kubernetes pods running successfully
+- Service wiring correctly routes traffic from port 80 to container port 5000
+- Public ingress endpoints return live API responses
+- MiniFlix frontend loads successfully in the browser
+
+---
+
+# 📸 Phase 4 Screenshots
 
 Saved in:
 
@@ -332,7 +326,7 @@ Example files:
 
 ---
 
-##  Repository Structure
+# Repository Structure
 
 ```text
 apps/
@@ -355,38 +349,36 @@ docs/
 
 ---
 
-##  Key DevOps Concepts Demonstrated
+# 🚀 DevOps Concepts Demonstrated
 
 This project demonstrates:
 
-* 🔁 GitOps deployment workflows
-* ☸️ Kubernetes application orchestration
-* ⚙️ CI/CD container pipelines
-* 🐳 Docker image lifecycle
-* 🌐 Kubernetes ingress networking
-* 📊 Observability with Prometheus and Grafana
-* ☁️ Infrastructure deployment on AWS
+- GitOps deployment workflows
+- Kubernetes application orchestration
+- CI/CD container pipelines
+- Docker image lifecycle
+- Kubernetes ingress networking
+- Observability using Prometheus and Grafana
+- Cloud deployment on AWS
 
 ---
 
-##  Future Improvements
+# Future Improvements
 
 Possible next steps:
 
-*  Horizontal Pod Autoscaling
-*  Terraform infrastructure provisioning
-*  Helm packaging for the application
-*  Logging stack with EFK or Loki
+- Horizontal Pod Autoscaling
+- Terraform infrastructure provisioning
+- Helm packaging for the application
+- Logging stack (EFK or Loki)
 
 ---
 
-##  Author
+# 👤 Author
 
-Built by **Adedoyin Ekong**
+**Adedoyin Ekong**
 
-DevOps / Cloud Engineer
-Specializing in **Kubernetes, GitOps, and CI/CD pipelines**
-
-
-
+DevOps / Cloud Engineer  
+Specializing in Kubernetes, GitOps, and CI/CD pipelines
+````
 
