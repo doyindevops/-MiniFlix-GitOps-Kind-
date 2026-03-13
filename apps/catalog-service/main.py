@@ -41,3 +41,6 @@ def get_movie(movie_id: int):
         if m["id"] == movie_id:
             return m
     return {"error": "not_found", "id": movie_id}
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
