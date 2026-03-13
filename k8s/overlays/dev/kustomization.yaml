@@ -9,7 +9,7 @@ resources:
 images:
   - name: miniflix-frontend
     newName: docker.io/adedoyine/miniflix-frontend
-    newTag: frontend-90874cf
+    newTag: frontend-791680c
   - name: miniflix-catalog
     newName: docker.io/adedoyine/miniflix-catalog
-    newTag: catalog-90874cf
+    newTag: catalog-791680c
