@@ -1,43 +1,54 @@
-MiniFlix 🎬 — Netflix-Style App with Kubernetes + GitOps
 
-MiniFlix is a small Netflix-style web application deployed on Kubernetes using a GitOps workflow with Argo CD.
+# MiniFlix 🎬 — Netflix-Style App with Kubernetes + GitOps
 
-The goal of this project is to demonstrate a modern DevOps delivery pipeline where application changes are automatically built, published, and deployed using Git as the single source of truth.
+MiniFlix is a small **Netflix-style web application** deployed on Kubernetes using a **GitOps workflow with Argo CD**.
+
+The goal of this project is to demonstrate a **modern DevOps delivery pipeline** where application changes are automatically built, published, and deployed using Git as the single source of truth.
 
 The application includes:
 
-A frontend UI displaying movie tiles (Netflix-style layout)
+* A **frontend UI** displaying movie tiles (Netflix-style layout)
+* A **Catalog API** providing movie data
+* A **GitOps deployment pipeline** that automatically updates the cluster when code changes
 
-A Catalog API providing movie data
+---
 
-A GitOps deployment pipeline that automatically updates the cluster when code changes
+# Live Demo
 
-Live Demo
+Frontend
 
-Frontend:
-
+```
 http://13.219.139.230
+```
 
-API example:
+API example
 
+```
 http://13.219.139.230/api/movies
+```
 
-Health check:
+Health check
 
+```
 http://13.219.139.230/api/health
-What the App Does
+```
+
+---
+
+# What the App Does
 
 MiniFlix demonstrates a simple streaming-platform style interface.
 
 Users can:
 
-• Open a Netflix-style UI
-• Browse movie tiles
-• Search titles
-• Fetch movie data via the API
+* Open a Netflix-style UI
+* Browse movie tiles
+* Search titles
+* Fetch movie data via the API
 
-Example API response:
+Example API response
 
+```json
 [
   {
     "id": 1,
@@ -46,38 +57,51 @@ Example API response:
     "genre": "Drama"
   }
 ]
-Tech Stack
-Infrastructure
+```
 
-• AWS EC2
-• Kubernetes (k3s)
+---
 
-DevOps
+# Tech Stack
 
-• GitOps deployment with Argo CD
-• CI pipeline using GitHub Actions
-• Container registry: Docker Hub
+## Infrastructure
 
-Application
+* AWS EC2
+* Kubernetes (**k3s**)
+
+## DevOps
+
+* GitOps deployment with **Argo CD**
+* CI pipeline using **GitHub Actions**
+* Container registry: **Docker Hub**
+
+## Application
 
 Frontend
-• HTML
-• Tailwind CSS
-• Nginx
+
+* HTML
+* Tailwind CSS
+* Nginx
 
 Backend
-• FastAPI
+
+* **FastAPI**
 
 Networking
-• NGINX Ingress Controller
+
+* **NGINX Ingress Controller**
 
 Monitoring
-• Prometheus + Grafana
 
-Architecture Overview
+* **Prometheus**
+* **Grafana**
 
-The deployment pipeline follows a GitOps model.
+---
 
+# Architecture Overview
+
+The deployment pipeline follows a **GitOps model**.
+
+```
 Developer Push
       ↓
 GitHub Actions (CI)
@@ -94,9 +118,11 @@ Kubernetes cluster syncs
 Pods update automatically
       ↓
 NGINX Ingress exposes service
+```
 
 Application architecture inside Kubernetes:
 
+```
 Internet
    │
    ▼
@@ -105,93 +131,137 @@ NGINX Ingress
    ├── /        → Frontend service
    │
    └── /api/*   → Catalog API service
-Phase 1 — GitOps Platform Setup
-Goal
+```
 
-Build the GitOps foundation before deploying the application.
+---
+
+# Phase 1 — GitOps Platform Setup
+
+## Goal
+
+Build the **GitOps foundation** before deploying the application.
 
 This phase focused on proving that:
 
+```
 Git → ArgoCD → Kubernetes
+```
 
 works correctly.
 
-What was implemented
+---
 
-• Kubernetes environment (initially Kind)
-• NGINX Ingress controller
-• Argo CD installation
-• GitOps deployment test application
+## What was implemented
+
+* Kubernetes environment (initially **Kind**)
+* **NGINX Ingress Controller**
+* **Argo CD installation**
+* GitOps deployment test application
 
 ArgoCD continuously watches the Git repository and automatically applies updates to the cluster.
 
-Phase 1 Screenshots
+---
 
-Saved in:
+## Phase 1 Screenshots
 
+Saved in
+
+```
 docs/screenshots/phase-1/
-Phase 2 — Deploy MiniFlix MVP
-Goal
+```
+
+---
+
+# Phase 2 — Deploy MiniFlix MVP
+
+## Goal
 
 Replace the test application with a real service:
 
-• MiniFlix UI
-• Catalog API
-• Ingress routing
+* MiniFlix UI
+* Catalog API
+* Ingress routing
 
-Deployment environment
+---
 
-Phase 2 runs on AWS EC2 using k3s.
+## Deployment environment
+
+Phase 2 runs on **AWS EC2 using k3s**.
 
 Reason:
 
-Local laptop resources struggled with:
+Local laptop resources struggled with
 
+```
 Kind + Docker + ArgoCD
+```
 
 Moving to EC2 allowed a stable Kubernetes environment while keeping costs low.
 
 Infrastructure used:
 
-• 1 EC2 instance
-• k3s (lightweight Kubernetes)
+* 1 EC2 instance
+* k3s (lightweight Kubernetes)
 
-Routing configuration
+---
+
+## Routing configuration
 
 Ingress rules route traffic like this:
 
+```
 /       → MiniFlix frontend
 /api/*  → Catalog API
+```
 
-Example:
+Example endpoints
 
+```
 /api/movies
 /api/health
-Quick verification commands
+```
 
-Check ArgoCD application:
+---
 
+## Quick verification commands
+
+Check ArgoCD application
+
+```bash
 kubectl get app -n argocd miniflix-dev
+```
 
-Check pods:
+Check pods
 
+```bash
 kubectl get pods -n miniflix
+```
 
-Check ingress:
+Check ingress
 
+```bash
 kubectl get ingress -n miniflix
+```
 
-Test API:
+Test API
 
+```bash
 curl http://13.219.139.230/api/movies
-Phase 2 Screenshots
+```
 
-Saved in:
+---
 
+## Phase 2 Screenshots
+
+Saved in
+
+```
 docs/screenshots/phase-2/
+```
 
-Example files:
+Example files
 
+```
 01-argocd-synced-healthy-sha.png
 02-miniflix-pods-running.png
 03-ingress-routing.png
@@ -201,40 +271,52 @@ Example files:
 07-ec2-instance-details.png
 08-argocd-ui-tree.png
 09-full-app-details.png
-Phase 3 — Observability
+```
+
+---
+
+# Phase 3 — Observability
 
 Monitoring was added to observe system health and resource usage.
 
-Stack deployed:
+Stack deployed
 
-• Prometheus
-• Grafana
-• kube-prometheus-stack
+* Prometheus
+* Grafana
+* kube-prometheus-stack
 
-Metrics monitored:
+Metrics monitored
 
-• Pod CPU usage
-• Pod memory usage
-• Pod restarts
-• Node resource usage
+* Pod CPU usage
+* Pod memory usage
+* Pod restarts
+* Node resource usage
 
 This allows visibility into how the application behaves in the cluster.
 
-Phase 4 — CI/CD Pipeline
+---
 
-Phase 4 introduces full CI/CD automation.
+# Phase 4 — CI/CD Pipeline
+
+Phase 4 introduces **full CI/CD automation**.
 
 When developers push code:
 
+```
 Push → GitHub Actions builds containers
      → Images pushed to DockerHub
      → GitOps manifests updated
      → ArgoCD detects change
      → Kubernetes automatically deploys new version
+```
 
 This means the cluster state is always synchronized with the Git repository.
 
-Repository Structure
+---
+
+# Repository Structure
+
+```
 apps/
    frontend/
    catalog-service/
@@ -251,32 +333,41 @@ docs/
 
 .github/workflows/
    miniflix-cicd.yaml
-Key DevOps Concepts Demonstrated
+```
+
+---
+
+# Key DevOps Concepts Demonstrated
 
 This project demonstrates:
 
-• GitOps deployment workflows
-• Kubernetes application orchestration
-• CI/CD container pipelines
-• Docker image lifecycle
-• Kubernetes ingress networking
-• Observability with Prometheus + Grafana
-• Infrastructure deployment on AWS
+* GitOps deployment workflows
+* Kubernetes application orchestration
+* CI/CD container pipelines
+* Docker image lifecycle
+* Kubernetes ingress networking
+* Observability with Prometheus + Grafana
+* Infrastructure deployment on AWS
 
-Future Improvements
+---
+
+# Future Improvements
 
 Possible next steps:
 
-• Horizontal Pod Autoscaling
-• Terraform infrastructure provisioning
-• Helm packaging for the application
-• Logging stack (EFK or Loki)
+* Horizontal Pod Autoscaling
+* Terraform infrastructure provisioning
+* Helm packaging for the application
+* Logging stack (EFK or Loki)
 
-Author
+---
+
+# Author
 
 Built by
 
-Adedoyin Ekong
+**Adedoyin Ekong**
 
 DevOps / Cloud Engineer
 Specializing in Kubernetes, GitOps, and CI/CD pipelines.
+
