@@ -11,19 +11,17 @@ The platform includes:
 - A GitOps deployment pipeline that continuously syncs Kubernetes with the Git repository
 
 ---
+# Deployment Verification
 
-# 🌐 Live Demo
+The application was successfully deployed and verified on AWS EC2 using k3s, ArgoCD, and NGINX Ingress.
 
-Frontend  
-http://13.219.139.230
+Verified endpoints during deployment:
 
-API example  
-http://13.219.139.230/api/movies
+- Frontend: `http://13.219.139.230`
+- API health: `http://13.219.139.230/api/health`
+- API movies: `http://13.219.139.230/api/movies`
 
-Health check  
-http://13.219.139.230/api/health
-
----
+These endpoints were active during project validation and are included here as deployment proof.---
 
 # What the App Does
 
