@@ -11,7 +11,7 @@ The platform includes:
 - A GitOps deployment pipeline that continuously syncs Kubernetes with the Git repository
 
 ---
-# Deployment Verification
+## Deployment Verification
 
 The application was successfully deployed and verified on AWS EC2 using k3s, ArgoCD, and NGINX Ingress.
 
@@ -23,7 +23,7 @@ Verified endpoints during deployment:
 
 These endpoints were active during project validation and are included here as deployment proof.
 
-# What the App Does
+##  What the App Does
 
 MiniFlix demonstrates a simple streaming-platform style interface.
 
@@ -49,20 +49,20 @@ Example API response:
 
 ---
 
-# 🛠 Tech Stack
+## 🛠 Tech Stack
 
-## Infrastructure
+###  Infrastructure
 
 - AWS EC2
 - Kubernetes (k3s)
 
-## DevOps
+###  DevOps
 
 - GitOps deployment with Argo CD
 - CI pipeline using GitHub Actions
 - Container registry: Docker Hub
 
-## Application
+###  Application
 
 ### Frontend
 - HTML
@@ -81,7 +81,7 @@ Example API response:
 
 ---
 
-# 🏗 Architecture Overview
+## 🏗 Architecture Overview
 
 The deployment pipeline follows a **GitOps model**:
 
@@ -119,9 +119,9 @@ NGINX Ingress
 
 ---
 
-# Phase 1 — GitOps Platform Setup
+##  Phase 1 — GitOps Platform Setup
 
-## Goal
+###  Goal
 
 Build the GitOps foundation before deploying the application.
 
@@ -131,7 +131,7 @@ This phase focused on proving that the GitOps flow works:
 Git → ArgoCD → Kubernetes
 ```
 
-## What Was Implemented
+###  What Was Implemented
 
 - Kubernetes environment (initially using Kind)
 - NGINX Ingress Controller
@@ -150,9 +150,9 @@ docs/screenshots/phase-1/
 
 ---
 
-# Phase 2 — Deploy MiniFlix MVP
+##  Phase 2 — Deploy MiniFlix MVP
 
-## Goal
+###  Goal
 
 Replace the test application with a real service:
 
@@ -243,7 +243,7 @@ Example files:
 
 ---
 
-# 📊 Phase 3 — Observability
+##  📊 Phase 3 — Observability
 
 Monitoring was added to observe cluster health and resource usage.
 
@@ -264,7 +264,7 @@ This provides visibility into application behavior and cluster performance.
 
 ---
 
-# 🔄 Phase 4 — CI/CD Pipeline
+##  🔄 Phase 4 — CI/CD Pipeline
 
 Phase 4 introduces full CI/CD automation.
 
@@ -282,7 +282,7 @@ This ensures the cluster state is always synchronized with the Git repository.
 
 ---
 
-# ✅ Phase 4 Verification
+##  ✅ Phase 4 Verification
 
 The CI/CD pipeline was verified end-to-end with the following evidence:
 
@@ -297,7 +297,7 @@ The CI/CD pipeline was verified end-to-end with the following evidence:
 
 ---
 
-# 📸 Phase 4 Screenshots
+##  📸 Phase 4 Screenshots
 
 Saved in:
 
