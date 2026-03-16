@@ -513,6 +513,43 @@ This project demonstrates:
 * Cloud deployment on AWS
 ---
 
+## Terraform Infrastructure (Infrastructure as Code)
+
+The repository includes a Terraform skeleton for provisioning the base AWS infrastructure used by MiniFlix.
+
+Terraform models the infrastructure required to run the Kubernetes environment and expose the application publicly.
+
+The infrastructure configuration includes:
+
+- AWS provider configuration
+- EC2 instance definition
+- Security group configuration
+- Output variables for public access
+
+The Terraform configuration is located in:
+
+terraform/
+
+Example structure:
+
+terraform/
+  provider.tf
+  variables.tf
+  security.tf
+  ec2.tf
+  outputs.tf
+  terraform.tfvars.example
+
+Example workflow:
+
+terraform init  
+terraform plan  
+terraform apply  
+
+Terraform would provision the EC2 infrastructure used to host the Kubernetes cluster where MiniFlix runs.
+
+The current project deployment uses a manually provisioned EC2 instance, while the Terraform configuration demonstrates how the infrastructure could be fully automated.
+
 # Future Improvements
 
 Possible next steps:
