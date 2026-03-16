@@ -86,36 +86,52 @@ Example API response:
 The deployment pipeline follows a **GitOps model**:
 
 ```text
-Developer Push
-      ↓
-GitHub Actions (CI)
-Build Docker Images
-      ↓
-Push Images → Docker Hub
-      ↓
-Update GitOps manifests
-      ↓
-ArgoCD detects change
-      ↓
-Kubernetes cluster syncs
-      ↓
-Pods update automatically
-      ↓
-NGINX Ingress exposes service
-```
+## System Architecture
 
-Application architecture inside Kubernetes:
+MiniFlix follows a GitOps-driven cloud-native architecture where application deployments are controlled through Git and automatically synchronized with the Kubernetes cluster.
 
-```text
-Internet
+The architecture consists of the following components:
+
+Developer
    │
    ▼
-NGINX Ingress
+GitHub Repository
    │
-   ├── /        → Frontend service
+   ▼
+GitHub Actions (CI Pipeline)
    │
-   └── /api/*   → Catalog API service
-```
+   ▼
+Docker Hub (Container Registry)
+   │
+   ▼
+ArgoCD (GitOps Controller)
+   │
+   ▼
+Kubernetes Cluster (k3s on AWS EC2)
+   │
+   ├── MiniFlix Frontend Pods
+   │
+   └── Catalog API Pods
+           │
+           ▼
+      Kubernetes Services
+           │
+           ▼
+     NGINX Ingress Controller
+           │
+           ▼
+        Internet Users
+
+Observability Layer:
+Prometheus → Metrics Collection
+Grafana → Visualization Dashboards
+
+Autoscaling:
+Horizontal Pod Autoscaler adjusts the number of pods based on resource usage.
+
+Resilience:
+Kubernetes self-healing automatically recreates failed pods.
+`
 
 ---
 
