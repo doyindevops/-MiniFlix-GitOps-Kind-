@@ -78,21 +78,13 @@ Example API response:
 ### Monitoring
 - Prometheus
 - Grafana
-
----
-
-## 🏗 Architecture Overview
-
-The deployment pipeline follows a **GitOps model**:
-
-
-
 ## System Architecture
 
 MiniFlix follows a GitOps-driven cloud-native architecture where application deployments are controlled through Git and automatically synchronized with the Kubernetes cluster.
 
 The architecture consists of the following components:
 
+```text
 Developer
    │
    ▼
@@ -122,16 +114,6 @@ Kubernetes Cluster (k3s on AWS EC2)
            │
            ▼
         Internet Users
-
-Observability Layer:
-Prometheus → Metrics Collection
-Grafana → Visualization Dashboards
-
-Autoscaling:
-Horizontal Pod Autoscaler adjusts the number of pods based on resource usage.
-
-Resilience:
-Kubernetes self-healing automatically recreates failed pods.
 ---
 
 ##  Phase 1 — GitOps Platform Setup
@@ -145,6 +127,12 @@ This phase focused on proving that the GitOps flow works:
 ```text
 Git → ArgoCD → Kubernetes
 ```
+Prometheus  → Metrics Collection
+Grafana     → Visualization Dashboards
+
+Horizontal Pod Autoscaler adjusts the number of pods based on resource usage.
+
+Kubernetes self-healing automatically recreates failed pods.
 
 ###  What Was Implemented
 
